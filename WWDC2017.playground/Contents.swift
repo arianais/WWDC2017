@@ -12,7 +12,6 @@ var palette = Palette(colors: colors, scene: scene, sort: 0)
 
 //SS
 if(palette.colors().count > 1){
-   
    for element in 0 ..< palette.colors().count - 1 {
         palette.setMin(min: element)
         for search in element + 1 ..< palette.colors().count {
@@ -25,6 +24,7 @@ if(palette.colors().count > 1){
         }
    }
 }
+
 UISetup.setRow(scene: scene, colors: palette.colors(), row: 5, pal:palette, sort: 0)
 
 UISetup.reset(sort:0,  scene: scene, pal: palette)
@@ -32,7 +32,6 @@ palette.reset(colors: colors, sort: 1)
 
 
 //IS
-
 if( palette.colors().count > 1 ) {
     for i in 1..<palette.colors().count {
         palette.setMin(min: i)
@@ -42,12 +41,12 @@ if( palette.colors().count > 1 ) {
         }
     }
 }
+
 UISetup.setRow(scene: scene, colors: palette.colors(), row: 5, pal:palette, sort: 1)
 UISetup.reset(sort: 1, scene: scene, pal: palette)
 palette.reset(colors: colors, sort: 2)
 
 //MS
-
 func mergeSort(_ array: [Int], right: Bool) -> [Int] {
     guard array.count > 1 else { return array }    // 1
     
@@ -60,6 +59,7 @@ func mergeSort(_ array: [Int], right: Bool) -> [Int] {
     
     return merge(leftPile: leftArray, rightPile: rightArray, right: right)             // 5
 }
+
 func merge(leftPile: [Int], rightPile: [Int], right: Bool) -> [Int] {
     palette.order.removeAll()
    
@@ -81,23 +81,14 @@ func merge(leftPile: [Int], rightPile: [Int], right: Bool) -> [Int] {
     
   
     while leftIndex < leftPile.count && rightIndex < rightPile.count {
-        
-    
-     
         if leftPile[leftIndex] < rightPile[rightIndex] {
             palette.order.append(leftPile[leftIndex])
             orderedPile.append(leftPile[leftIndex])
             leftIndex += 1
-            
-            
-        
         } else if leftPile[leftIndex] > rightPile[rightIndex] {
-         
             palette.order.append(rightPile[rightIndex])
             orderedPile.append(rightPile[rightIndex])
             rightIndex += 1
-            
-            
         } else {
             palette.order.append(leftPile[leftIndex])
             orderedPile.append(leftPile[leftIndex])
