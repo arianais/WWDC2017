@@ -38,8 +38,13 @@ public class UISetup {
         var col = 1
         let textures = UISetup.getcTextures()
         for color in iColors{
-            UISetup.opacityChange(color: color, index: iColors.index(of:color)!, scene: scene, sort: sort)
-            
+            if(sort == 2 && row == 0){
+           
+               UISetup.opacityChangeForward(color: color, index: iColors.index(of:color)!, scene: scene, sort: sort)
+            }
+            else{
+                UISetup.opacityChange(color: color, index: iColors.index(of:color)!, scene: scene, sort: sort)
+            }
             UISetup.displayColor(color: textures[color], row: row, col: iColors.index(of:color)!, scene: scene)
             col += 1
         }
@@ -73,11 +78,24 @@ public class UISetup {
         let remove = SKAction.run{UISetup.removeSelect(scene: scene, row: row, col1: col1, col2: col2,color1: color1, color2: color2, pal: pal)}
         pal.addAction(action: remove)
     }
-    public static func select50(scene: SKScene, row: Int, start: Int, end: Int, data: [Int], pal: Palette) ->Void{
+    public static func select(scene: SKScene, row: Int, col: Int, color: Int,   pal: Palette) ->Void{
         //let pic = SKAction.run {UISetup.op}
         
-        let run = SKAction.run{UISetup.displaySelect50(scene: scene, row: row, start: start, end: end, data: data, pal: pal)}
+        let run = SKAction.run{UISetup.displaySelect(scene: scene, row: row, col: col, color1: color, pal: pal)}
         
+        pal.addAction(action: run)
+        let wait = SKAction.wait(forDuration: 1.0, withRange: 0.5)
+        pal.addAction(action: wait)
+        let remove = SKAction.run{UISetup.removeSelect(scene: scene, row: row, col: col, color: color, pal: pal)}
+        pal.addAction(action: remove)
+        let opacityChange = SKAction.run {UISetup.opacityChangeForward(color: color, index: col, scene: scene, sort: 2)}
+        pal.addAction(action: opacityChange)
+    }
+    public static func select50(scene: SKScene, row: Int, start: Int, end: Int, data: [Int], pal: Palette) ->Void{
+        //let pic = SKAction.run {UISetup.op}
+         UISetup.setRow(scene: scene, colors: data, row: row, pal: pal, sort: 2)
+        let run = SKAction.run{UISetup.displaySelect50(scene: scene, row: row, start: start, end: end, data: data, pal: pal)}
+       
         pal.addAction(action: run)
         let wait = SKAction.wait(forDuration: 1.0, withRange: 0.5)
         pal.addAction(action: wait)
@@ -145,6 +163,25 @@ public class UISetup {
         }
         
     }
+    public static func displaySelect(scene: SKScene, row: Int, col: Int, color1: Int,  pal: Palette){
+        let textures = UISetup.getcTextures()
+        let rS = String(row)
+        let cS = String(col+1)
+   
+        
+        if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
+            
+            let tex =  SKTexture(imageNamed: "color-selected-\(colors[color1])")
+            
+            
+            node.texture = tex
+            node.size.height = 75.0
+            node.size.width = 75.0
+            node.alpha = 1.0
+        }
+      
+        
+    }
     public static func displaySelect50(scene: SKScene, row: Int, start: Int, end:Int, data: [Int],  pal: Palette){
         let textures = UISetup.getcTextures()
         let rS = String(row)
@@ -190,6 +227,23 @@ public class UISetup {
             node1.size.height = 50.0
             node1.size.width = 50.0
         }
+        
+    }
+    public static func removeSelect(scene: SKScene, row: Int, col: Int, color: Int, pal: Palette){
+        let rS = String(row)
+        let cS = String(col+1)
+     
+        
+        if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
+            
+            let tex =  SKTexture(imageNamed: "color-\(colors[color])")
+            
+            node.texture = tex
+            node.size.height = 50.0
+            node.size.width = 50.0
+            node.alpha = 1.0
+        }
+  
         
     }
     public static func removeSelect(scene: SKScene, row: Int, start: Int, end:Int, data: [Int],  pal: Palette){
@@ -275,6 +329,16 @@ public class UISetup {
         if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort])?.childNode(withName: pics[sort]+"-"+colors[color]){
         
             node.alpha = CGFloat(5-abs(color-index))/5.0
+        }
+        
+    }
+    private static func opacityChangeForward(color: Int, index: Int, scene: SKScene, sort: Int ){
+        
+        print("change")
+        if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort])?.childNode(withName: pics[sort]+"-"+colors[color]){
+           
+            node.alpha = CGFloat(5-abs(color-index))/5.0
+             print(color, index)
         }
         
     }

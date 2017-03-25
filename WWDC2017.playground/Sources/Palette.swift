@@ -9,16 +9,28 @@ open class Palette {
     //fix setters & getters to be private vars
     private var actionSet:[SKAction] = []
     private var colorsArr:[Int] = []
-    private var rowCount = 0
+    private var rowCount = 0 {
+        didSet{
+            if(sort == 0){
+                
+            }
+        }
+        
+    }
     private var sort: Int
     public var msArr:[Int] = []
     public var middle: Int = 0
     public var order:[Int]{
+        
         didSet{
-          // rowCount += 1
-        //UISetup.setRow(scene: scene, colors: colors(), row: rowCount, pal: self, sort: 2)
-           
+            if(order.count > 0){
+                self.push(i: order.count - 1  + middle, e: order[order.count-1])
+            }
+            else{
+               // UISetup.setRow(scene: scene, colors: colorsArr, row: rowCount, pal: self, sort: 2)
+            }
         }
+        
     }
     private var minInt: Int
     private var scene:SKScene
@@ -35,7 +47,7 @@ open class Palette {
         minInt = colorsArr[0]
         order = []
         UISetup.setRow(scene: scene, colors: colorsArr, row: 0, pal:self, sort: sort)
-        rowCount = 1
+    
       // UISetup.removeRow(scene: scene, colors: colorsArr, row: 0, pal:self)
     }
     public func addAction(action: SKAction){
@@ -54,8 +66,13 @@ open class Palette {
     }
     public func compare(i1: Int, i2: Int)->Int{
         
-  //change the rc + 1 for non ms
-        UISetup.select(scene: scene, row: rowCount+1, col1: i1, col2: i2, color1: colorsArr[i1], color2: colorsArr[i2], pal: self)
+        if(sort == 2){
+            UISetup.select(scene: scene, row: rowCount+1, col1: i1, col2: i2, color1: colorsArr[i1], color2: colorsArr[i2], pal: self)
+        }
+        else{
+            UISetup.select(scene: scene, row: rowCount, col1: i1, col2: i2, color1: colorsArr[i1], color2: colorsArr[i2], pal: self)
+        }
+        
       
        
         if (colorsArr[i1] > colorsArr[i2]){
@@ -87,16 +104,24 @@ open class Palette {
         return minInt
     }
     public func swap(e1: Int, e2: Int){
-  
-        UISetup.swap(scene: scene, row: rowCount+1, col1: e1, col2: e2, color1: colorsArr[e1], color2: colorsArr[e2],  pal: self)
+        
+        UISetup.swap(scene: scene, row: rowCount, col1: e1, col2: e2, color1: colorsArr[e1], color2: colorsArr[e2],  pal: self)
             let temp = self.colorsArr[e1]
             self.colorsArr[e1] = self.colorsArr[e2]
             self.colorsArr[e2] = temp
     }
   
     public func group(start: Int, end: Int){
-        UISetup.select50(scene: scene, row: rowCount+1, start: start, end: end, data: colorsArr, pal: self)
+        let remainder = colorsArr[order.count...colorsArr.count-1]
+        colorsArr = order + remainder
+        rowCount += 1
+        UISetup.select50(scene: scene, row: rowCount, start: start, end: end, data: colorsArr, pal: self)
+      
         
+    }
+    public func push (i: Int, e: Int){
+       
+        UISetup.select(scene: scene, row: rowCount+1, col: i, color: e, pal: self)
     }
  
     public func reset(colors: [Int], sort: Int){
@@ -106,7 +131,7 @@ open class Palette {
         colorsArr = colors
         
         UISetup.setRow(scene: scene, colors: colorsArr, row: 1, pal:self, sort: sort)
-     
+       
 
     }
 }
