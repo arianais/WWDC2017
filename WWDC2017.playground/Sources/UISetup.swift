@@ -7,6 +7,7 @@ import PlaygroundSupport
 public class UISetup {
     static let colors = ["red", "yellow", "green", "blue", "purple"]
     static let sorts = ["SSCanvas", "ISCanvas", "MSCanvas"]
+    static let frames = [14, 0, 0]
     static let pics = ["cat", "hp", "fw"]
     
     private static func getcTextures() -> [SKTexture] {
@@ -15,8 +16,18 @@ public class UISetup {
     private static func getsTextures() -> [SKTexture] {
         return UISetup.colors.map { SKTexture(imageNamed: "color-selected-\($0)") }
     }
-    private static func getcatTextures() -> [SKTexture] {
-        return UISetup.colors.map { SKTexture(imageNamed: "cat-\($0)") }
+  
+    private static func getAnimations(sort:Int) -> [SKTexture] {
+         print("framcount")
+        var arr = [Int] ()
+        
+         print("framcount", arr)
+        arr += 1...frames[sort]
+        print("framcount", arr)
+         arr += arr.reversed()
+         print("framcount", arr)
+   
+        return arr.map { SKTexture(imageNamed: pics[sort] + "\($0)") }
     }
 
     private static func createColorNode(i: Int, cTextures: [SKTexture]) -> SKSpriteNode {
@@ -387,5 +398,32 @@ public class UISetup {
         let wait = SKAction.wait(forDuration: 1.0, withRange: 0.5)
         pal.addAction(action: wait)
 
+    }
+    public static func removePic (sort: Int, scene: SKScene, pal: Palette){
+        for color in colors{
+            if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort])?.childNode(withName: pics[sort] + "-" + color) as? SKSpriteNode{
+            node.alpha = 0.0
+            
+        }
+        }
+    }
+    public static func setTextures (sort: Int, scene: SKScene, pal: Palette){
+        if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort]) as? SKSpriteNode{
+            print(getAnimations(sort: sort))
+            let action = SKAction.animate(with: getAnimations(sort: sort), timePerFrame: 0.2)
+            node.run(action)
+            node.texture = getAnimations(sort: sort)[10]
+           
+        }
+    }
+    public static func animate (sort: Int, scene: SKScene, pal: Palette){
+        print("animating")
+        let remove = SKAction.run{UISetup.removePic(sort:sort, scene: scene, pal: pal)}
+        pal.addAction(action: remove)
+        let animate = SKAction.run {UISetup.setTextures(sort: sort, scene: scene, pal: pal)}
+        
+        pal.addAction(action: animate)
+        let wait = SKAction.wait(forDuration: 10.0, withRange: 0.5)
+        pal.addAction(action: wait)
     }
 }

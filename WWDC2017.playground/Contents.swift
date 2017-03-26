@@ -26,7 +26,7 @@ if(palette.colors().count > 1){
    }
 }
 UISetup.setRow(scene: scene, colors: palette.colors(), row: 5, pal:palette, sort: 0)
-
+UISetup.animate(sort: 0, scene: scene, pal: palette)
 UISetup.reset(sort:0,  scene: scene, pal: palette)
 palette.reset(colors: colors, sort: 1)
 
@@ -127,7 +127,6 @@ func merge(leftPile: [Int], rightPile: [Int], right: Bool) -> [Int] {
 }
 
 print("init colors", colors)
-
 print("end colors", mergeSort(colors, right: false))
 UISetup.play(scene: scene, pal: palette)
 
