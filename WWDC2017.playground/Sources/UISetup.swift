@@ -7,7 +7,7 @@ import PlaygroundSupport
 public class UISetup {
     static let colors = ["red", "yellow", "green", "blue", "purple"]
     static let sorts = ["SSCanvas", "ISCanvas", "MSCanvas"]
-    static let frames = [14, 0, 0]
+    static let frames = [14, 20, 0]
     static let pics = ["cat", "hp", "fw"]
     
     private static func getcTextures() -> [SKTexture] {

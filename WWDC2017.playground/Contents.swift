@@ -43,6 +43,7 @@ if( palette.colors().count > 1 ) {
     }
 }
 UISetup.setRow(scene: scene, colors: palette.colors(), row: 5, pal:palette, sort: 1)
+UISetup.animate(sort: 1, scene: scene, pal: palette)
 UISetup.reset(sort: 1, scene: scene, pal: palette)
 palette.reset(colors: colors, sort: 2)
 
