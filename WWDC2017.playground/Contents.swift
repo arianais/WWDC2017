@@ -129,6 +129,7 @@ func merge(leftPile: [Int], rightPile: [Int], right: Bool) -> [Int] {
 
 print("init colors", colors)
 print("end colors", mergeSort(colors, right: false))
+UISetup.animate(sort: 2, scene: scene, pal: palette)
 UISetup.play(scene: scene, pal: palette)
 
 

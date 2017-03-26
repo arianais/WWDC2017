@@ -7,7 +7,7 @@ import PlaygroundSupport
 public class UISetup {
     static let colors = ["red", "yellow", "green", "blue", "purple"]
     static let sorts = ["SSCanvas", "ISCanvas", "MSCanvas"]
-    static let frames = [14, 20, 0]
+    static let frames = [14, 20, 26]
     static let pics = ["cat", "hp", "fw"]
     
     private static func getcTextures() -> [SKTexture] {
@@ -21,7 +21,7 @@ public class UISetup {
          print("framcount")
         var arr = [Int] ()
         
-         print("framcount", arr)
+        
         arr += 1...frames[sort]
         print("framcount", arr)
          arr += arr.reversed()
@@ -410,8 +410,16 @@ public class UISetup {
     public static func setTextures (sort: Int, scene: SKScene, pal: Palette){
         if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort]) as? SKSpriteNode{
             print(getAnimations(sort: sort))
-            let action = SKAction.animate(with: getAnimations(sort: sort), timePerFrame: 0.2)
-            node.run(action)
+            
+            if sort != 2 {
+                let action = SKAction.animate(with: getAnimations(sort: sort), timePerFrame: 0.2)
+                 node.run(action)
+            }
+            else{
+                let action = SKAction.animate(with: getAnimations(sort: sort), timePerFrame: 0.3)
+                 node.run(action)
+            }
+           
             node.texture = getAnimations(sort: sort)[10]
            
         }
