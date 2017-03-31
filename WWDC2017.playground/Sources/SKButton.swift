@@ -12,7 +12,7 @@ public class SKButton : SKShapeNode {
     private let initialSize: CGSize
     private let labelNode: SKLabelNode
     private let sort: Int
-    private let palette: Palette
+    private let doodle: Doodle
     
     var action: (() -> Void)?
     
@@ -62,9 +62,9 @@ public class SKButton : SKShapeNode {
     }
     
     public
-    init(sort: Int, palette: Palette, rectOf: CGSize, labelText: String, fillColor: UIColor, strokeColor: UIColor, glowWidth: CGFloat = 2, action: (() -> Void)? = nil) {
+    init(sort: Int, doodle: Doodle, rectOf: CGSize, labelText: String, fillColor: UIColor, strokeColor: UIColor, glowWidth: CGFloat = 2, action: (() -> Void)? = nil) {
         self.sort = sort
-        self.palette = palette
+        self.doodle = doodle
         self.initialSize = rectOf
         self.action = action
         self.labelNode = SKLabelNode(text: labelText)
@@ -110,9 +110,7 @@ public class SKButton : SKShapeNode {
     
     override public func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
-          //  UISetup.reset(sort:sort,  scene: scene!, pal: palette)
-            
-           
+          
             self.touchDown(atPoint: t.location(in: self))
         }
     }
@@ -127,11 +125,16 @@ public class SKButton : SKShapeNode {
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
-            self.palette.actions[sort + 1].append(SKAction.run{UISetup.reset(sort:0,  scene: self.scene!, pal: self.palette)})
-            self.palette.reset(colors:[4,1,0,3,2], sort: 1)
-            UISetup.play(scene: scene!, pal: palette, sort:sort + 1)
+           // self.palette.actions[sort + 1].append(SKAction.run{UISetup.reset(sort:0,  scene: self.scene!, pal: self.palette)})
+           // self.palette.reset(colors:[4,1,0,3,2], sort: 1)
+            //UISetup.play(scene: scene!, pal: palette)
+            //UISetup.reset(sort:sort,  scene: scene!, pal: self.doodle.palettes[sort + 1])
+            
+            print(doodle.palettes.count)
+            UISetup.play(scene: scene!, pal: doodle.palettes[sort])
             self.touchUp(atPoint: t.location(in: self))
             print("touch")
+            self.removeFromParent()
         }
     }
     
