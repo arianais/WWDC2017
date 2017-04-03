@@ -1,11 +1,7 @@
-//
-//  ButtonNode.swift
-//
-//  Created by Adi Unnithan on 1/19/17.
-//  Copyright © 2017 Adi Unnithan. All rights reserved.
-//
+//This is just the button class I used. Not much to see here.
 import Foundation
 import SpriteKit
+import UIKit
 
 public class SKButton : SKShapeNode {
   
@@ -69,7 +65,6 @@ public class SKButton : SKShapeNode {
         self.action = action
         self.labelNode = SKLabelNode(text: labelText)
         super.init()
-        print("atouch")
         let rect = CGRect(x: -rectOf.width / 2, y: -rectOf.height / 2, width: rectOf.width, height: rectOf.height)
         self.path = CGPath(rect: rect, transform: nil)
         self.fillColor = fillColor
@@ -84,22 +79,19 @@ public class SKButton : SKShapeNode {
     }
     
     func touchDown(atPoint pos : CGPoint) {
-        print("touch")
+     
         let skAction = SKAction.scale(to: 1.0, duration: 0.25)
         self.run(skAction)
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-          print("touch")
+     
     }
     
     func touchUp(atPoint pos : CGPoint) {
-          print("touch")
+    
         let skAction = SKAction.scale(to: 1.0, duration: 0.25)
         self.run(skAction)
-        
-        // Determine if the button node contains this point.
-        // In order to do this we first have to convert to the parent's coordinates
         if let parent = self.parent {
             let posInParent = self.convert(pos, to: parent)
             if self.contains(posInParent) {
@@ -117,30 +109,21 @@ public class SKButton : SKShapeNode {
     
     override public func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
-            
             self.touchMoved(toPoint: t.location(in: self))
-            print("touch")
+    
         }
     }
     
     override public func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
-           // self.palette.actions[sort + 1].append(SKAction.run{UISetup.reset(sort:0,  scene: self.scene!, pal: self.palette)})
-           // self.palette.reset(colors:[4,1,0,3,2], sort: 1)
-            //UISetup.play(scene: scene!, pal: palette)
-            //UISetup.reset(sort:sort,  scene: scene!, pal: self.doodle.palettes[sort + 1])
-            
-            print(doodle.palettes.count)
             UISetup.play(scene: scene!, pal: doodle.palettes[sort])
             self.touchUp(atPoint: t.location(in: self))
-            print("touch")
             self.removeFromParent()
         }
     }
     
     override public func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
-            print("touch")
             self.touchUp(atPoint: t.location(in: self))
         }
     }

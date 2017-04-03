@@ -1,3 +1,4 @@
+//Welcome to the brains of the UI. This file is where you do not want to edit. Back away slowly and no harm will come :P.
 import UIKit
 import SpriteKit
 import SceneKit
@@ -16,22 +17,18 @@ public class UISetup {
     private static func getsTextures() -> [SKTexture] {
         return UISetup.colors.map { SKTexture(imageNamed: "color-selected-\($0)") }
     }
-    
+    public static func end(pal: Palette){
+        pal.sorted = true
+    }
     private static func getAnimations(sort:Int) -> [SKTexture] {
-       
         var arr = [Int] ()
-        
-        
         arr += 1...frames[sort]
-   
         arr += arr.reversed()
-
         if(sort == 0){
             arr += arr + arr
         }
         if(sort == 1){
             arr += 1...frames[sort]
-            
         }
         return arr.map { SKTexture(imageNamed: pics[sort] + "\($0)") }
     }
@@ -40,23 +37,11 @@ public class UISetup {
         let color = SKSpriteNode(texture: cTextures[i])
         return color
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public static func initColorRow(palette: SKNode, row: Int, scene: SKScene, iColors: [Int], sort: Int){
-        
         var col = 1
         let textures = UISetup.getcTextures()
         for color in iColors{
             if(sort == 2 && row == 0){
-                
                 UISetup.opacityChangeForward(color: color, index: iColors.index(of:color)!, scene: scene, sort: sort)
             }
             else{
@@ -66,31 +51,16 @@ public class UISetup {
             col += 1
         }
     }
-    
-    
     public static func setRow(scene: SKScene, colors: [Int], row: Int, pal:Palette, sort: Int){
-    
         if let palette = scene.childNode(withName:"palette"){
-            
             let initPalette = SKAction.run { UISetup.initColorRow(palette: palette, row: row, scene: scene, iColors: colors, sort: sort) }
-            
-            
             pal.addAction(action: initPalette)
-          
-            
         }
-        
     }
-    
-    
-    
-    
     public static func select(scene: SKScene, row: Int, col1: Int, col2: Int, color1: Int,  color2: Int, pal: Palette) ->Void{
-        //let pic = SKAction.run {UISetup.op}
         let sound = SKAction.playSoundFileNamed("pop.m4a", waitForCompletion: false)
         pal.addAction(action: sound)
         let run = SKAction.run{UISetup.displaySelect(scene: scene, row: row, col1: col1, col2: col2, color1: color1, color2: color2, pal: pal)}
-        
         pal.addAction(action: run)
         let wait = SKAction.wait(forDuration: 1.0, withRange: 0.5)
         pal.addAction(action: wait)
@@ -98,10 +68,7 @@ public class UISetup {
         pal.addAction(action: remove)
     }
     public static func select(scene: SKScene, row: Int, col: Int, color: Int,   pal: Palette) ->Void{
-        //let pic = SKAction.run {UISetup.op}
-        
         let run = SKAction.run{UISetup.displaySelect(scene: scene, row: row, col: col, color1: color, pal: pal)}
-        
         pal.addAction(action: run)
         let wait = SKAction.wait(forDuration: 1.0, withRange: 0.5)
         pal.addAction(action: wait)
@@ -129,31 +96,23 @@ public class UISetup {
         pal.addAction(action: wait)
         let remove = SKAction.run{UISetup.removeSwap(scene: scene, row: row, col1: col1, col2: col2, color1: color1, color2: color2,  pal: pal)}
         pal.addAction(action: remove)
-        if(pal.colors() == [1,2,3,4,5]){
-            UISetup.setRow(scene: scene, colors: pal.colors(), row: 5, pal: pal, sort: pal.sort)
+        if(pal.colors == [1,2,3,4,5]){
+            UISetup.setRow(scene: scene, colors: pal.colors, row: 5, pal: pal, sort: pal.sort)
         }
-        
     }
     public static func displaySwap(scene: SKScene, row: Int, col1: Int, col2:Int, color1:Int, color2:Int,  pal: Palette){
-        let textures = UISetup.getcTextures()
         let rS = String(row)
         let cS = String(col1+1)
         let cS1 = String(col2+1)
-        
         if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-selected-\(colors[color2])")
-            
-            
             node.texture = tex
             node.size.height = 75.0
             node.size.width = 75.0
             node.alpha = 1.0
         }
         if  let node1: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS1) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-selected-\(colors[color1])")
-            
             node1.texture = tex
             node1.size.height = 75.0
             node1.size.width = 75.0
@@ -161,123 +120,82 @@ public class UISetup {
         
     }
     public static func displaySelect(scene: SKScene, row: Int, col1: Int, col2:Int, color1: Int, color2: Int,  pal: Palette){
-        let textures = UISetup.getcTextures()
         let rS = String(row)
         let cS = String(col1+1)
         let cS1 = String(col2+1)
-        
         if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-selected-\(colors[color1])")
-            
-            
             node.texture = tex
             node.size.height = 75.0
             node.size.width = 75.0
             node.alpha = 1.0
         }
         if  let node1: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS1) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-selected-\(colors[color2])")
-            
             node1.texture = tex
             node1.size.height = 75.0
             node1.size.width = 75.0
         }
-        
     }
     public static func displaySelect(scene: SKScene, row: Int, col: Int, color1: Int,  pal: Palette){
         let textures = UISetup.getcTextures()
         let rS = String(row)
         let cS = String(col+1)
-        
-        
-        if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-            
+       if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
             let tex =  SKTexture(imageNamed: "color-selected-\(colors[color1])")
-            
-            
             node.texture = tex
             node.size.height = 75.0
             node.size.width = 75.0
             node.alpha = 1.0
         }
-        
-        
     }
     public static func displaySelect50(scene: SKScene, row: Int, start: Int, end:Int, data: [Int],  pal: Palette){
-        let textures = UISetup.getcTextures()
         let rS = String(row)
-        
-        
         for i in start..<end+1{
             let cS = String(i+1)
-            
             if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-                
                 let tex =  SKTexture(imageNamed: "color-selected-\(colors[data[i]])")
-                
-                
                 node.texture = tex
                 node.size.height = 75.0
                 node.size.width = 75.0
                 node.alpha = 0.5
             }
         }
-        
-        
-        
     }
     public static func removeSelect(scene: SKScene, row: Int, col1: Int, col2:Int, color1: Int, color2: Int, pal: Palette){
         let rS = String(row)
         let cS = String(col1+1)
         let cS1 = String(col2+1)
-        
         if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-\(colors[color1])")
-            
             node.texture = tex
             node.size.height = 50.0
             node.size.width = 50.0
             node.alpha = 1.0
         }
         if  let node1: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS1) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-\(colors[color2])")
-            
             node1.texture = tex
             node1.size.height = 50.0
             node1.size.width = 50.0
         }
-        
     }
     public static func removeSelect(scene: SKScene, row: Int, col: Int, color: Int, pal: Palette){
         let rS = String(row)
         let cS = String(col+1)
-        
-        
         if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-\(colors[color])")
-            
             node.texture = tex
             node.size.height = 50.0
             node.size.width = 50.0
             node.alpha = 1.0
         }
-        
-        
     }
     public static func removeSelect(scene: SKScene, row: Int, start: Int, end:Int, data: [Int],  pal: Palette){
-        let textures = UISetup.getcTextures()
         let rS = String(row)
-        
-        
         for i in start..<end+1{
             let cS = String(1 + i)
             if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-                
                 let tex =  SKTexture(imageNamed: "color-\(colors[data[i]])")
                 node.alpha = 1.0
                 node.texture = tex
@@ -285,35 +203,26 @@ public class UISetup {
                 node.size.width = 50.0
             }
         }
-        
-        
-        
     }
     public static func removeSwap(scene: SKScene, row: Int, col1: Int, col2:Int, color1: Int, color2: Int, pal: Palette){
         let rS = String(row)
         let cS = String(col1+1)
         let cS1 = String(col2+1)
-        
         if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-\(colors[color2])")
-            
             node.texture = tex
             node.size.height = 50.0
             node.size.width = 50.0
             node.alpha = 1.0
         }
         if  let node1: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS1) as? SKSpriteNode{
-            
             let tex =  SKTexture(imageNamed: "color-\(colors[color1])")
-            
             node1.texture = tex
             node1.size.height = 50.0
             node1.size.width = 50.0
         }
         
     }
-    
     private static func displayColor(color: SKTexture, row: Int, col: Int, scene: SKScene) -> Void {
         let rS = String(row)
         let cS = String(col+1)
@@ -321,22 +230,15 @@ public class UISetup {
         if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
             node.alpha = 1.0
             node.texture = color
-            
         }
         
     }
-    
-    
     public static func play(scene:SKScene, pal: Palette)-> Void{
         let palette = scene.childNode(withName:"palette")
         palette!.run(SKAction.sequence(pal.getActions()))
      
         
     }
-    
-    
-    
-    
     public static func start() -> SKScene{
         let cfURL = Bundle.main.url(forResource: "SFMono-Regular", withExtension: "otf") as! CFURL
         CTFontManagerRegisterFontsForURL(cfURL , CTFontManagerScope.process, nil)
@@ -348,22 +250,15 @@ public class UISetup {
         return scene!
     }
     private static func opacityChange(color: Int, index: Int, scene: SKScene, sort: Int ){
-        
-        
         if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort])?.childNode(withName: pics[sort]+"-"+colors[color]){
-            
             node.alpha = CGFloat(5-abs(color-index))/5.0
         }
         
     }
     private static func opacityChangeForward(color: Int, index: Int, scene: SKScene, sort: Int ){
-        
-  
         if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort])?.childNode(withName: pics[sort]+"-"+colors[color]){
-            
             node.alpha = CGFloat(5-abs(color-index))/5.0
         }
-        
     }
     private static func moveCanvasOut(sort: Int, scene:SKScene){
         if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort]){
@@ -384,11 +279,9 @@ public class UISetup {
     private static func removeColor(color: SKTexture, row: Int, col: Int, scene: SKScene) -> Void {
         let rS = String(row)
         let cS = String(col+1)
-        
         if  let node: SKSpriteNode = scene.childNode(withName:"palette")?.childNode(withName: rS)?.childNode(withName: cS) as? SKSpriteNode{
             let act = SKAction.fadeOut(withDuration: 0.5)
             node.run(act)
-            //node.texture =
         }
         
     }
@@ -397,11 +290,10 @@ public class UISetup {
             let texture = SKTexture(imageNamed: sorts[sort+1]+"-title")
             node.texture = texture
             node.alpha = 1.0
-            
         }
     }
     public static func reset(sort: Int, scene: SKScene, pal: Palette){
-        let fadeOut = SKAction.run{UISetup.fadeOutColorRow( rows: pal.colors().count, scene: scene, iColors: pal.colors())}
+        let fadeOut = SKAction.run{UISetup.fadeOutColorRow( rows: pal.colors.count, scene: scene, iColors: pal.colors)}
         pal.addAction(action: fadeOut)
         let act = SKAction.run{UISetup.moveCanvasOut(sort: sort-1, scene: scene)}
         pal.addAction(action: act)
@@ -415,14 +307,11 @@ public class UISetup {
         for color in colors{
             if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort])?.childNode(withName: pics[sort] + "-" + color) as? SKSpriteNode{
                 node.alpha = 0.0
-                
             }
         }
     }
     public static func setTextures (sort: Int, scene: SKScene, pal: Palette){
         if let node = scene.childNode(withName: "canvas")?.childNode(withName: sorts[sort])?.childNode(withName: pics[sort]) as? SKSpriteNode{
-         
-            
             if sort != 2 {
                 let action = SKAction.animate(with: getAnimations(sort: sort), timePerFrame: 0.2)
                 node.run(action)
@@ -431,9 +320,7 @@ public class UISetup {
                 let action = SKAction.animate(with: getAnimations(sort: sort), timePerFrame: 0.3)
                 node.run(action)
             }
-            
             node.texture = getAnimations(sort: sort)[10]
-            
         }
     }
     public static func animate (sort: Int, scene: SKScene, pal: Palette, doodle: Doodle){
@@ -443,38 +330,22 @@ public class UISetup {
         let remove = SKAction.run{UISetup.removePic(sort:sort, scene: scene, pal: pal)}
         pal.addAction(action: remove)
         let animate = SKAction.run {UISetup.setTextures(sort: sort, scene: scene, pal: pal)}
-                 pal.addAction(action: animate)
-          let wait = SKAction.wait(forDuration: 3.0, withRange: 0.5)
+        pal.addAction(action: animate)
         if(sort != 2){
-   
             let action = SKAction.run { UISetup.addButton(scene: scene, sort: sort + 1, doodle: doodle)}
-              pal.addAction(action: action)
+            pal.addAction(action: action)
         }
-      
-        
-      
-        
     }
     
    
     
     public static func addButton(scene: SKScene, sort: Int, doodle: Doodle){
-        print(sort, Doodle.titles[sort])
         let button: SKButton =  SKButton(sort: sort, doodle: doodle, rectOf: CGSize(width: 100.0, height: 100.0), labelText: Doodle.titles[sort], fillColor: UIColor.clear, strokeColor: UIColor.clear, glowWidth: CGFloat(sort))
         button.fontName = "SFMono-Regular"
         button.fontColor = UIColor.init(colorLiteralRed: (255.0/255.0), green: (145.0/255.0), blue: (163.0/255.0), alpha: 1.0)
         button.fontSize = 20.0
-        
         button.position = CGPoint(x:Doodle.titleX[sort], y:Doodle.titleY[sort])
         scene.addChild(button)
-      //  let fadeIn = SKAction.fadeIn(withDuration: 1.0)
-      //  button.run(fadeIn)
-       // let addButton = SKAction.run {scene.addChild(button)}
-       // doodle.palettes[sort].addAction(action: addButton)
-        
-        
-        
-        
     }
     
 }
