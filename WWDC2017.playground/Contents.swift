@@ -94,12 +94,12 @@ func insertionSort(palette: Palette)->[Doodle.Paint]{
 */
             while palette.min > 0 && palette.compare(i1: palette.min, i2: palette.min-1) < 0{
                 palette.swap(e1: palette.min, e2:  palette.min-1)
-                palette.initMin(min: palette.min-1)
+                palette.min =  palette.min-1
             }
         }
     }
 /*:
- 6. Returns the sorted array.
+ 5. Returns the sorted array.
 */
     return palette.sortedColors()
 }
@@ -150,16 +150,16 @@ func merge(leftPile: [Int], rightPile: [Int], right: Bool, palette: Palette) -> 
  1. This is the merged array. It is empty right now, but you will build it up in subsequent steps by appending elements from the other arrays.
 */
     palette.order.removeAll()
-    let start = palette.middle
     palette.setMiddle(c: rightPile.count)
-    let end = palette.middle + leftPile.count + rightPile.count - 1
-    palette.initOrderedPile(start: start, end: end + rightPile.count - 1)
+
+    palette.initOrderedPile(start: palette.middle, end: palette.middle + leftPile.count + rightPile.count - 1 + rightPile.count - 1)
     
 /*:
 2. You need two indexes to keep track of your progress for the two arrays while merging.
 */
     var leftIndex = 0
     var rightIndex = 0
+    //UI Boolean - no need to pay attention to 
     palette.right = right
 /*:
  3. This while-loop will compare the elements from the left and right sides and append them into the orderedPile while making sure that the result stays in order.

@@ -20,7 +20,7 @@ public class UISetup {
     public static func end(pal: Palette){
         pal.sorted = true
     }
-    private static func getAnimations(sort:Int) -> [SKTexture] {
+    private static func getAnimations(sort:Int) -> [SKTexture] { 
         var arr = [Int] ()
         arr += 1...frames[sort]
         arr += arr.reversed()
