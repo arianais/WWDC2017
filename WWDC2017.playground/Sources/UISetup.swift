@@ -342,7 +342,7 @@ public class UISetup {
     public static func addButton(scene: SKScene, sort: Int, doodle: Doodle){
         let button: SKButton =  SKButton(sort: sort, doodle: doodle, rectOf: CGSize(width: 100.0, height: 100.0), labelText: Doodle.titles[sort], fillColor: UIColor.clear, strokeColor: UIColor.clear, glowWidth: CGFloat(sort))
         button.fontName = "SFMono-Regular"
-        button.fontColor = UIColor.init(colorLiteralRed: (255.0/255.0), green: (145.0/255.0), blue: (163.0/255.0), alpha: 1.0)
+        button.fontColor = UIColor.init(red: (255.0/255.0), green: (145.0/255.0), blue: (163.0/255.0), alpha: 1.0)
         button.fontSize = 20.0
         button.position = CGPoint(x:Doodle.titleX[sort], y:Doodle.titleY[sort])
         scene.addChild(button)
